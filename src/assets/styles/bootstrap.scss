@@ -1,0 +1,8 @@
+// remove google web fonts
+$web-font-path: false;
+
+@import "bootswatch/dist/darkly/variables";
+@import "bootstrap/scss/bootstrap";
+@import "bootswatch/dist/darkly/bootswatch";
+
+
