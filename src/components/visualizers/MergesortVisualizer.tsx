@@ -1,15 +1,18 @@
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
-import { Button, Col, Container, Form, Row } from 'react-bootstrap';
-import { generateRandomArray } from '../utils';
+import { Button, Col, Container, Row } from 'react-bootstrap';
+import { generateRandomArray } from '../../utils';
+import { VisualizerProps } from '../../interfaces';
 
-export const MergeSortVisualizer = () => {
-  const [array, setArray] = useState<number[]>([]);
-  const [isSorting, setIsSorting] = useState<boolean>(false);
-  const [arraySize, setArraySize] = useState<number>(10);
-  const [sortDelay, setSortDelay] = useState<number>(500);
-
+export const MergeSortVisualizer: React.FC<VisualizerProps> = ({
+  arraySize,
+  array,
+  setArray,
+  //sortDelay,
+  isSorting,
+  setIsSorting,
+}) => {
   const boxRefs = useRef<(HTMLDivElement | null)[]>([]);
   const container = useRef(null);
   const { contextSafe } = useGSAP({ scope: container });
@@ -135,33 +138,6 @@ export const MergeSortVisualizer = () => {
     <>
       <h1 className="mt-5 text-center">Merge Sort</h1>
       <Container ref={container} className="mt-5">
-        <Row>
-          <Col>
-            <Form.Group controlId="formArraySize">
-              <Form.Label>Array Size: {arraySize}</Form.Label>
-              <Form.Range
-                value={arraySize}
-                onChange={(e) => setArraySize(parseInt(e.target.value))}
-                min={5}
-                max={15}
-                disabled={isSorting}
-              />
-            </Form.Group>
-          </Col>
-          <Col>
-            <Form.Group controlId="formSortDelay">
-              <Form.Label>Sort Delay (ms): {sortDelay}</Form.Label>
-              <Form.Range
-                value={sortDelay}
-                onChange={(e) => setSortDelay(parseInt(e.target.value))}
-                min={1}
-                max={5000}
-                disabled={isSorting}
-              />
-            </Form.Group>
-          </Col>
-        </Row>
-
         <Row className="mt-5">
           {array.map((v, i) => (
             <Col
