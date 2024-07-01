@@ -13,14 +13,16 @@ export const MergeSortVisualizer = () => {
   const boxRefs = useRef<(HTMLDivElement | null)[]>([]);
   const container = useRef(null);
   const { contextSafe } = useGSAP({ scope: container });
+  const tl = gsap.timeline();
 
   useEffect(() => {
     resetComponent();
   }, [arraySize]);
 
   const resetComponent = () => {
-    const array = generateRandomArray(arraySize);
-    setArray(array);
+    //const array = generateRandomArray(arraySize);
+    //setArray(array);
+    setArray([5, 97, 5, 0, 37, 9, 93, 91, 6, 16]);
   };
 
   const mergeSort = async (array: number[], left = 0): Promise<number[]> => {
@@ -46,7 +48,6 @@ export const MergeSortVisualizer = () => {
     const result: number[] = [];
     let leftIndex = 0;
     let rightIndex = 0;
-    const startIdx = left;
 
     while (leftIndex < l.length && rightIndex < r.length) {
       if (l[leftIndex] < r[rightIndex]) {
@@ -58,45 +59,79 @@ export const MergeSortVisualizer = () => {
       }
     }
 
+    // Concatenate remaining elements from left or right array
     const merged = result
       .concat(l.slice(leftIndex))
       .concat(r.slice(rightIndex));
 
-    await visualizeSort(merged, startIdx);
+    // Visualize the merge process
+    await visualizeSort(merged, left);
 
     return merged;
   };
 
   const visualizeSort = contextSafe(
     async (currentArray: number[], startIdx: number) => {
-      const tl = gsap.timeline();
-
-      currentArray.forEach((value, index) => {
+      // Move all boxes up before merging
+      currentArray.forEach((_, index) => {
         const box = boxRefs.current[startIdx + index];
-
         if (box) {
           tl.to(box, {
             y: -50,
             duration: 0.2,
             backgroundColor: '#f39c12',
-            onComplete: () => {
-              box.innerText = value.toString();
-              box.style.backgroundColor = '#3498db';
-            },
           });
         }
       });
 
       await tl.play();
-      await delay(sortDelay);
-      tl.revert();
+      //tl.clear();
 
+      // Calculate the new positions and animate the final merge
+      const counts: Record<number, number> = {}; // Object to count occurrences of each value
+
+      // Calculate the new positions and animate the final merge
       currentArray.forEach((value, index) => {
         const box = boxRefs.current[startIdx + index];
         if (box) {
-          box.innerText = value.toString();
+          if (!(value in counts)) {
+            counts[value] = 0;
+          }
+          const offset = counts[value]; // Offset for the same values
+          counts[value]++; // Increment count for next occurrence
+
+          const boxWidth = box.getBoundingClientRect().width;
+          const newIndex = index + offset;
+
+          //const newIndex = currentArray.indexOf(parseInt(box.innerText));
+          let boxWidth = box.getBoundingClientRect().width;
+          if (offset && offset > 1) {
+            boxWidth = boxWidth * (offset - 2);
+          }
+
+          tl.to(box, {
+            x: (newIndex - index) * boxWidth, // Move horizontally to new position
+            duration: 0.5,
+          });
         }
       });
+
+      await tl.play();
+      //tl.clear();
+
+      // Move all boxes back down to their original vertical positions
+      currentArray.forEach((_, index) => {
+        const box = boxRefs.current[startIdx + index];
+        if (box) {
+          tl.to(box, {
+            y: 0,
+            duration: 0.2,
+            backgroundColor: '#3498db',
+          });
+        }
+      });
+
+      await tl.play();
     },
   );
 
@@ -104,6 +139,7 @@ export const MergeSortVisualizer = () => {
     setIsSorting(true);
     const sortedArray = await mergeSort([...array]);
     setArray(sortedArray);
+    tl.revert();
     setIsSorting(false);
   };
 
