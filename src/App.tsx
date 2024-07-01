@@ -1,55 +1,84 @@
-import { SelectionsortVisualizer } from './components/SelectionsortVisualizer.tsx';
-import { BubblesortVisualizer } from './components/BubblesortVisualizer.tsx';
-import { MergeSortVisualizer } from './components/MergesortVisualizer.tsx';
+import { SelectionsortVisualizer } from './components/visualizers/SelectionsortVisualizer.tsx';
+import { BubblesortVisualizer } from './components/visualizers/BubblesortVisualizer.tsx';
+import { MergeSortVisualizer } from './components/visualizers/MergesortVisualizer.tsx';
 import { useState } from 'react';
-import { Container, Form, Nav, Navbar } from 'react-bootstrap';
-import { Github } from 'react-bootstrap-icons';
+import { Container, Row } from 'react-bootstrap';
+import { generateRandomArray } from './utils';
+import { SettingsPanel } from './components/settings/SettingsPanel.tsx';
+import { Navigation } from './components/navigation/Navigation.tsx';
 
 // todo: refactor the components, upcycle shared states
 export const App = () => {
   const [sortType, setSortType] = useState<string>('bubble');
+  const [arraySize, setArraySize] = useState<number>(10);
+  const [sortDelay, setSortDelay] = useState<number>(500);
+  const [isSorting, setIsSorting] = useState<boolean>(false);
+  const [array, setArray] = useState<number[]>(generateRandomArray(arraySize));
 
   const renderVisualizer = () => {
     switch (sortType) {
       case 'bubble':
-        return <BubblesortVisualizer />;
+        return (
+          <BubblesortVisualizer
+            arraySize={arraySize}
+            array={array}
+            setArray={setArray}
+            sortDelay={sortDelay}
+            isSorting={isSorting}
+            setIsSorting={setIsSorting}
+          />
+        );
       case 'selection':
-        return <SelectionsortVisualizer />;
+        return (
+          <SelectionsortVisualizer
+            arraySize={arraySize}
+            array={array}
+            setArray={setArray}
+            sortDelay={sortDelay}
+            isSorting={isSorting}
+            setIsSorting={setIsSorting}
+          />
+        );
       case 'merge':
-        return <MergeSortVisualizer />;
+        return (
+          <MergeSortVisualizer
+            arraySize={arraySize}
+            array={array}
+            setArray={setArray}
+            sortDelay={sortDelay}
+            isSorting={isSorting}
+            setIsSorting={setIsSorting}
+          />
+        );
       default:
-        return <BubblesortVisualizer />;
+        return (
+          <BubblesortVisualizer
+            arraySize={arraySize}
+            array={array}
+            setArray={setArray}
+            sortDelay={sortDelay}
+            isSorting={isSorting}
+            setIsSorting={setIsSorting}
+          />
+        );
     }
   };
+
   return (
     <>
-      <Navbar collapseOnSelect expand="lg" className="bg-body-tertiary">
-        <Container fluid>
-          <Navbar.Brand href="#">Sort Algorithm Visualizer</Navbar.Brand>
-          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-          <Navbar.Collapse id="responsive-navbar-nav">
-            <Nav className="me-auto">
-              <Nav.Link target="_blank" href="https://github.com/agonyz">
-                <Github size={35} />
-              </Nav.Link>
-            </Nav>
-            <Nav>
-              <Form.Group controlId="formSortType" className="d-flex">
-                <Form.Control
-                  as="select"
-                  value={sortType}
-                  onChange={(e) => setSortType(e.target.value)}
-                >
-                  <option value="bubble">Bubblesort</option>
-                  <option value="selection">Selectionsort</option>
-                  <option value="merge">Mergesort</option>
-                </Form.Control>
-              </Form.Group>
-            </Nav>
-          </Navbar.Collapse>
-        </Container>
-      </Navbar>
-      {renderVisualizer()}
+      <Navigation sortType={sortType} setSortType={setSortType} />
+      <Container>
+        <Row className="mt-4">
+          <SettingsPanel
+            arraySize={arraySize}
+            setArraySize={setArraySize}
+            sortDelay={sortDelay}
+            setSortDelay={setSortDelay}
+            isSorting={isSorting}
+          />
+        </Row>
+        {renderVisualizer()}
+      </Container>
     </>
   );
 };
