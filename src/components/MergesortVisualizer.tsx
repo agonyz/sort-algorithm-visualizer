@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
-import { delay, generateRandomArray } from '../utils';
+import { generateRandomArray } from '../utils';
 
 export const MergeSortVisualizer = () => {
   const [array, setArray] = useState<number[]>([]);
