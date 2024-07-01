@@ -1,5 +1,6 @@
 import { SelectionsortVisualizer } from './components/SelectionsortVisualizer.tsx';
 import { BubblesortVisualizer } from './components/BubblesortVisualizer.tsx';
+import { MergeSortVisualizer } from './components/MergesortVisualizer.tsx';
 import { useState } from 'react';
 import { Container, Form, Nav, Navbar } from 'react-bootstrap';
 import { Github } from 'react-bootstrap-icons';
@@ -14,6 +15,8 @@ export const App = () => {
         return <BubblesortVisualizer />;
       case 'selection':
         return <SelectionsortVisualizer />;
+      case 'merge':
+        return <MergeSortVisualizer />;
       default:
         return <BubblesortVisualizer />;
     }
@@ -39,6 +42,7 @@ export const App = () => {
                 >
                   <option value="bubble">Bubblesort</option>
                   <option value="selection">Selectionsort</option>
+                  <option value="merge">Mergesort</option>
                 </Form.Control>
               </Form.Group>
             </Nav>
