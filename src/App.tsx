@@ -7,7 +7,7 @@ import { Github } from 'react-bootstrap-icons';
 
 // todo: refactor the components, upcycle shared states
 export const App = () => {
-  const [sortType, setSortType] = useState<string>('merge');
+  const [sortType, setSortType] = useState<string>('bubble');
 
   const renderVisualizer = () => {
     switch (sortType) {

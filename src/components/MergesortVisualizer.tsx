@@ -13,16 +13,15 @@ export const MergeSortVisualizer = () => {
   const boxRefs = useRef<(HTMLDivElement | null)[]>([]);
   const container = useRef(null);
   const { contextSafe } = useGSAP({ scope: container });
-  const tl = gsap.timeline();
+  const tl = gsap.timeline(); // todo: find better way than using global gsap timeline element
 
   useEffect(() => {
     resetComponent();
   }, [arraySize]);
 
   const resetComponent = () => {
-    //const array = generateRandomArray(arraySize);
-    //setArray(array);
-    setArray([5, 97, 5, 0, 37, 9, 93, 91, 6, 16]);
+    const array = generateRandomArray(arraySize);
+    setArray(array);
   };
 
   const mergeSort = async (array: number[], left = 0): Promise<number[]> => {
@@ -59,12 +58,12 @@ export const MergeSortVisualizer = () => {
       }
     }
 
-    // Concatenate remaining elements from left or right array
+    // concatenate remaining elements from left or right array
     const merged = result
       .concat(l.slice(leftIndex))
       .concat(r.slice(rightIndex));
 
-    // Visualize the merge process
+    // visualize the merge process
     await visualizeSort(merged, left);
 
     return merged;
@@ -72,7 +71,7 @@ export const MergeSortVisualizer = () => {
 
   const visualizeSort = contextSafe(
     async (currentArray: number[], startIdx: number) => {
-      // Move all boxes up before merging
+      // move all boxes up before merging
       currentArray.forEach((_, index) => {
         const box = boxRefs.current[startIdx + index];
         if (box) {
@@ -85,41 +84,30 @@ export const MergeSortVisualizer = () => {
       });
 
       await tl.play();
-      //tl.clear();
 
-      // Calculate the new positions and animate the final merge
-      const counts: Record<number, number> = {}; // Object to count occurrences of each value
-
-      // Calculate the new positions and animate the final merge
-      currentArray.forEach((value, index) => {
+      // calculate the new positions and animate the final merge
+      const counts: Record<number, number> = {}; // keep count of occurrences of each value
+      currentArray.forEach((_, index) => {
         const box = boxRefs.current[startIdx + index];
         if (box) {
-          if (!(value in counts)) {
-            counts[value] = 0;
+          const boxValue = parseInt(box.innerText);
+          if (!(boxValue in counts)) {
+            counts[boxValue] = 0;
           }
-          const offset = counts[value]; // Offset for the same values
-          counts[value]++; // Increment count for next occurrence
+          const offset = counts[boxValue]; // offset for the same values
+          counts[boxValue]++; // increment count for next occurrence
 
-          const boxWidth = box.getBoundingClientRect().width;
-          const newIndex = index + offset;
-
-          //const newIndex = currentArray.indexOf(parseInt(box.innerText));
-          let boxWidth = box.getBoundingClientRect().width;
-          if (offset && offset > 1) {
-            boxWidth = boxWidth * (offset - 2);
-          }
-
+          const newIndex = currentArray.indexOf(boxValue) + offset;
           tl.to(box, {
-            x: (newIndex - index) * boxWidth, // Move horizontally to new position
+            x: (newIndex - index) * box.getBoundingClientRect().width, // move horizontally to new position
             duration: 0.5,
           });
         }
       });
 
       await tl.play();
-      //tl.clear();
 
-      // Move all boxes back down to their original vertical positions
+      // move all boxes back down to their original vertical positions
       currentArray.forEach((_, index) => {
         const box = boxRefs.current[startIdx + index];
         if (box) {
