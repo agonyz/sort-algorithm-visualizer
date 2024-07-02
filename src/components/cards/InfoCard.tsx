@@ -14,29 +14,27 @@ export const InfoCard: React.FC<InfoCardProps> = ({ sortType }) => {
     <Card className="mt-5">
       <Card.Header>Info</Card.Header>
       <Card.Body>
-        <Card.Text>
-          <Row>
-            <Col md={9}>
-              <h5>{sort.name}</h5>
-              <div className="mt-3">{sort.description}</div>
-            </Col>
-            <Col md={3}>
-              <h5>Time Complexity</h5>
-              <Row className="mt-3">
-                <Col>Worst Case:</Col>
-                <Col>{sort.complexity.worst}</Col>
-              </Row>
-              <Row>
-                <Col>Average Case:</Col>
-                <Col>{sort.complexity.average}</Col>
-              </Row>
-              <Row>
-                <Col>Best Case:</Col>
-                <Col>{sort.complexity.best}</Col>
-              </Row>
-            </Col>
-          </Row>
-        </Card.Text>
+        <Row>
+          <Col md={9}>
+            <h5>{sort.name}</h5>
+            <div className="mt-3">{sort.description}</div>
+          </Col>
+          <Col md={3}>
+            <h5>Time Complexity</h5>
+            <Row className="mt-3">
+              <Col>Worst Case:</Col>
+              <Col>{sort.complexity.worst}</Col>
+            </Row>
+            <Row>
+              <Col>Average Case:</Col>
+              <Col>{sort.complexity.average}</Col>
+            </Row>
+            <Row>
+              <Col>Best Case:</Col>
+              <Col>{sort.complexity.best}</Col>
+            </Row>
+          </Col>
+        </Row>
       </Card.Body>
     </Card>
   );
