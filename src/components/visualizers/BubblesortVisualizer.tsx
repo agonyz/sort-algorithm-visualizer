@@ -1,17 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
-import { Button, Col, Container, Row } from 'react-bootstrap';
-import { delay, generateRandomArray } from '../../utils';
+import { Col, Container, Row } from 'react-bootstrap';
+import { delay } from '../../utils';
 import { VisualizerProps } from '../../interfaces';
 
 export const BubblesortVisualizer: React.FC<VisualizerProps> = ({
-  arraySize,
   array,
   setArray,
   sortDelay,
-  isSorting,
   setIsSorting,
+  sortRef,
 }) => {
   const [currentJ, setCurrentJ] = useState<number | null>(null);
 
@@ -21,15 +20,8 @@ export const BubblesortVisualizer: React.FC<VisualizerProps> = ({
   const { contextSafe } = useGSAP({ scope: container });
 
   useEffect(() => {
-    const array = generateRandomArray(arraySize);
-    setArray(array);
-  }, [arraySize]);
-
-  const resetComponent = () => {
-    const array = generateRandomArray(arraySize);
-    setArray(array);
-    setCurrentJ(null);
-  };
+    sortRef.current = (array: number[]) => bubbleSort(array);
+  }, [sortRef]);
 
   const bubbleSort = async (array: number[]) => {
     setIsSorting(true);
@@ -129,26 +121,6 @@ export const BubblesortVisualizer: React.FC<VisualizerProps> = ({
               {v}
             </Col>
           ))}
-        </Row>
-        <Row className="justify-content-center mt-3">
-          <Col className="d-flex justify-content-center">
-            <Button
-              className="mt-5 mx-3"
-              onClick={() => resetComponent()}
-              disabled={isSorting}
-            >
-              Generate
-            </Button>
-          </Col>
-          <Col className="d-flex justify-content-center">
-            <Button
-              className="mt-5"
-              onClick={() => bubbleSort(array)}
-              disabled={isSorting}
-            >
-              Sort
-            </Button>
-          </Col>
         </Row>
       </Container>
     </>

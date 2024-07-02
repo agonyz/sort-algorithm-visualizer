@@ -1,17 +1,14 @@
 import React, { useEffect, useRef } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
-import { Button, Col, Container, Row } from 'react-bootstrap';
-import { generateRandomArray } from '../../utils';
+import { Col, Container, Row } from 'react-bootstrap';
 import { VisualizerProps } from '../../interfaces';
 
 export const MergeSortVisualizer: React.FC<VisualizerProps> = ({
-  arraySize,
   array,
   setArray,
-  //sortDelay,
-  isSorting,
   setIsSorting,
+  sortRef,
 }) => {
   const boxRefs = useRef<(HTMLDivElement | null)[]>([]);
   const container = useRef(null);
@@ -19,13 +16,8 @@ export const MergeSortVisualizer: React.FC<VisualizerProps> = ({
   const tl = gsap.timeline(); // todo: find better way than using global gsap timeline element
 
   useEffect(() => {
-    resetComponent();
-  }, [arraySize]);
-
-  const resetComponent = () => {
-    const array = generateRandomArray(arraySize);
-    setArray(array);
-  };
+    sortRef.current = () => startSort();
+  }, [sortRef]);
 
   const mergeSort = async (array: number[], left = 0): Promise<number[]> => {
     if (array.length <= 1) {
@@ -152,26 +144,6 @@ export const MergeSortVisualizer: React.FC<VisualizerProps> = ({
               {v}
             </Col>
           ))}
-        </Row>
-        <Row className="justify-content-center mt-3">
-          <Col className="d-flex justify-content-center">
-            <Button
-              className="mt-5 mx-3"
-              onClick={() => resetComponent()}
-              disabled={isSorting}
-            >
-              Generate
-            </Button>
-          </Col>
-          <Col className="d-flex justify-content-center">
-            <Button
-              className="mt-5"
-              onClick={() => startSort()}
-              disabled={isSorting}
-            >
-              Sort
-            </Button>
-          </Col>
         </Row>
       </Container>
     </>

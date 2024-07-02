@@ -6,6 +6,7 @@ import React from 'react';
 export const Navigation: React.FC<NavigationProps> = ({
   sortType,
   setSortType,
+  isSorting,
 }) => {
   return (
     <Navbar collapseOnSelect expand="lg" className="bg-body-tertiary">
@@ -24,6 +25,7 @@ export const Navigation: React.FC<NavigationProps> = ({
                 as="select"
                 value={sortType}
                 onChange={(e) => setSortType(e.target.value)}
+                disabled={isSorting}
               >
                 <option value="bubble">Bubblesort</option>
                 <option value="selection">Selectionsort</option>

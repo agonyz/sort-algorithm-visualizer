@@ -1,17 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
-import { Button, Col, Container, Row } from 'react-bootstrap';
-import { delay, generateRandomArray } from '../../utils';
+import { Col, Container, Row } from 'react-bootstrap';
+import { delay } from '../../utils';
 import { VisualizerProps } from '../../interfaces';
 
 export const SelectionsortVisualizer: React.FC<VisualizerProps> = ({
-  arraySize,
   array,
   setArray,
   sortDelay,
-  isSorting,
   setIsSorting,
+  sortRef,
 }) => {
   const [currentI, setCurrentI] = useState<number | null>(null);
   const [currentJ, setCurrentJ] = useState<number | null>(null);
@@ -23,17 +22,8 @@ export const SelectionsortVisualizer: React.FC<VisualizerProps> = ({
   const { contextSafe } = useGSAP({ scope: container });
 
   useEffect(() => {
-    const array = generateRandomArray(arraySize);
-    setArray(array);
-  }, [arraySize]);
-
-  const resetComponent = () => {
-    const array = generateRandomArray(arraySize);
-    setArray(array);
-    setCurrentI(null);
-    setCurrentJ(null);
-    setCurrentMin(null);
-  };
+    sortRef.current = (array: number[]) => selectionSort(array);
+  }, [sortRef]);
 
   const selectionSort = async (array: number[]) => {
     let min = null;
@@ -156,26 +146,6 @@ export const SelectionsortVisualizer: React.FC<VisualizerProps> = ({
               {v}
             </Col>
           ))}
-        </Row>
-        <Row className="justify-content-center mt-3">
-          <Col className="d-flex justify-content-center">
-            <Button
-              className="mt-5 mx-3"
-              onClick={() => resetComponent()}
-              disabled={isSorting}
-            >
-              Generate
-            </Button>
-          </Col>
-          <Col className="d-flex justify-content-center">
-            <Button
-              className="mt-5"
-              onClick={() => selectionSort(array)}
-              disabled={isSorting}
-            >
-              Sort
-            </Button>
-          </Col>
         </Row>
       </Container>
     </>
