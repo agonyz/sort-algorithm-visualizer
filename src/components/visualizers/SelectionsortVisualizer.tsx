@@ -11,6 +11,7 @@ export const SelectionsortVisualizer: React.FC<VisualizerProps> = ({
   sortDelay,
   setIsSorting,
   sortRef,
+  onSortEnd,
 }) => {
   const [currentI, setCurrentI] = useState<number | null>(null);
   const [currentJ, setCurrentJ] = useState<number | null>(null);
@@ -55,6 +56,7 @@ export const SelectionsortVisualizer: React.FC<VisualizerProps> = ({
     }
 
     setIsSorting(false);
+    onSortEnd();
     setCurrentI(null);
     setCurrentJ(null);
     setCurrentMin(null);
@@ -86,7 +88,6 @@ export const SelectionsortVisualizer: React.FC<VisualizerProps> = ({
 
   return (
     <>
-      <h1 className="mt-5 text-center">Selectionsort</h1>
       <Container ref={container} className="mt-5">
         <Row className="mt-5" style={{ marginBottom: 60 }}>
           <Col className="d-flex justify-content-center align-items-center">

@@ -7,6 +7,8 @@ import { generateRandomArray } from './utils';
 import { SettingsPanel } from './components/panels/SettingsPanel.tsx';
 import { Navigation } from './components/navigation/Navigation.tsx';
 import { ControlPanel } from './components/panels/ControlPanel.tsx';
+import { InfoCard } from './components/cards/InfoCard.tsx';
+import { SortSuccessToast } from './components/toasts/SortSuccessToast.tsx';
 
 // todo: refactor the components, upcycle shared states
 export const App = () => {
@@ -15,6 +17,7 @@ export const App = () => {
   const [sortDelay, setSortDelay] = useState<number>(500);
   const [isSorting, setIsSorting] = useState<boolean>(false);
   const [array, setArray] = useState<number[]>(generateRandomArray(arraySize));
+  const [showToast, setShowToast] = useState<boolean>(false);
 
   // sort method refs
   const bubbleSortRef = useRef<(array: number[]) => void>(() => {}); // initialize with an empty function (ts error)
@@ -31,6 +34,10 @@ export const App = () => {
     setArray(array);
   }, [arraySize]);
 
+  const handleSortEnd = () => {
+    setShowToast(true);
+  };
+
   const renderVisualizer = () => {
     switch (sortType) {
       case 'bubble':
@@ -43,6 +50,7 @@ export const App = () => {
             isSorting={isSorting}
             setIsSorting={setIsSorting}
             sortRef={bubbleSortRef}
+            onSortEnd={handleSortEnd}
           />
         );
       case 'selection':
@@ -55,6 +63,7 @@ export const App = () => {
             isSorting={isSorting}
             setIsSorting={setIsSorting}
             sortRef={selectionSortRef}
+            onSortEnd={handleSortEnd}
           />
         );
       case 'merge':
@@ -67,6 +76,7 @@ export const App = () => {
             isSorting={isSorting}
             setIsSorting={setIsSorting}
             sortRef={mergeSortRef}
+            onSortEnd={handleSortEnd}
           />
         );
       default:
@@ -79,6 +89,7 @@ export const App = () => {
             isSorting={isSorting}
             setIsSorting={setIsSorting}
             sortRef={bubbleSortRef}
+            onSortEnd={handleSortEnd}
           />
         );
     }
@@ -101,6 +112,7 @@ export const App = () => {
             isSorting={isSorting}
           />
         </Row>
+        <InfoCard sortType={sortType} />
         {renderVisualizer()}
         <ControlPanel
           isSorting={isSorting}
@@ -122,6 +134,7 @@ export const App = () => {
             }
           }}
         />
+        <SortSuccessToast show={showToast} setShow={setShowToast} />
       </Container>
     </>
   );
