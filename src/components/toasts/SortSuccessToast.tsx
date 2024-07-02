@@ -16,7 +16,6 @@ export const SortSuccessToast: React.FC<SortSuccessToastProps> = ({
       show={show}
       delay={3000}
       autohide
-      bg={'success'}
       style={{ position: 'fixed', bottom: '20px', right: '20px' }}
     >
       <Toast.Header>
