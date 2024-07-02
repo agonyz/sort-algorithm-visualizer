@@ -6,6 +6,7 @@ import { VisualizerProps } from '../../interfaces';
 
 export const MergeSortVisualizer: React.FC<VisualizerProps> = ({
   array,
+  arraySize,
   setArray,
   setIsSorting,
   sortRef,
@@ -16,8 +17,8 @@ export const MergeSortVisualizer: React.FC<VisualizerProps> = ({
   const tl = gsap.timeline(); // todo: find better way than using global gsap timeline element
 
   useEffect(() => {
-    sortRef.current = () => startSort();
-  }, [sortRef]);
+    sortRef.current = (array: number[]) => startSort(array);
+  }, [sortRef, array, arraySize]);
 
   const mergeSort = async (array: number[], left = 0): Promise<number[]> => {
     if (array.length <= 1) {
@@ -118,7 +119,7 @@ export const MergeSortVisualizer: React.FC<VisualizerProps> = ({
     },
   );
 
-  const startSort = async () => {
+  const startSort = async (array: number[]) => {
     setIsSorting(true);
     const sortedArray = await mergeSort([...array]);
     setArray(sortedArray);
