@@ -8,4 +8,5 @@ export interface VisualizerProps {
   isSorting: boolean;
   setIsSorting: (sorting: boolean) => void;
   sortRef: MutableRefObject<(array: number[]) => void>;
+  onSortEnd: () => void;
 }

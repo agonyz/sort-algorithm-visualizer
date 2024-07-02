@@ -10,6 +10,7 @@ export const MergeSortVisualizer: React.FC<VisualizerProps> = ({
   setArray,
   setIsSorting,
   sortRef,
+  onSortEnd,
 }) => {
   const boxRefs = useRef<(HTMLDivElement | null)[]>([]);
   const container = useRef(null);
@@ -125,11 +126,11 @@ export const MergeSortVisualizer: React.FC<VisualizerProps> = ({
     setArray(sortedArray);
     tl.revert();
     setIsSorting(false);
+    onSortEnd();
   };
 
   return (
     <>
-      <h1 className="mt-5 text-center">Merge Sort</h1>
       <Container ref={container} className="mt-5">
         <Row className="mt-5">
           {array.map((v, i) => (

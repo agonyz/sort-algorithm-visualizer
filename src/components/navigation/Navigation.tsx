@@ -9,7 +9,12 @@ export const Navigation: React.FC<NavigationProps> = ({
   isSorting,
 }) => {
   return (
-    <Navbar collapseOnSelect expand="lg" className="bg-body-tertiary">
+    <Navbar
+      collapseOnSelect
+      expand="lg"
+      className="bg-primary"
+      data-bs-theme="dark"
+    >
       <Container fluid>
         <Navbar.Brand href="#">Sort Algorithm Visualizer</Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />

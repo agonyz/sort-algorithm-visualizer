@@ -1,3 +1,5 @@
+import { sorts } from './sorts.ts';
+
 export const delay = (ms: number) => {
   return new Promise((resolve) => setTimeout(resolve, ms));
 };
@@ -9,3 +11,5 @@ export const generateRandomArray = (size: number): number[] => {
   }
   return array;
 };
+
+export { sorts };

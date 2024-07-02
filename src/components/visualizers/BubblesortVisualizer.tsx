@@ -11,6 +11,7 @@ export const BubblesortVisualizer: React.FC<VisualizerProps> = ({
   sortDelay,
   setIsSorting,
   sortRef,
+  onSortEnd,
 }) => {
   const [currentJ, setCurrentJ] = useState<number | null>(null);
 
@@ -46,6 +47,7 @@ export const BubblesortVisualizer: React.FC<VisualizerProps> = ({
       }
     }
     setIsSorting(false);
+    onSortEnd();
     setCurrentJ(null);
   };
 
@@ -74,7 +76,6 @@ export const BubblesortVisualizer: React.FC<VisualizerProps> = ({
 
   return (
     <>
-      <h1 className="mt-5 text-center">Bubblesort</h1>
       <Container ref={container} className="mt-5">
         <Row className="mt-5" style={{ marginBottom: 60 }}>
           <Col className="d-flex justify-content-center align-items-center">
